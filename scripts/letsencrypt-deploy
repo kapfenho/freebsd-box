@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# there is no seprations between prod and live in subdirs
+#
+
+set -o errexit
+
+src=/usr/local/etc/letsencrypt/live/agoracon.at
+
+copy_cert() {
+    sudo -n cp -f ${src}/fullchain.pem ${1}/${2}.crt
+    sudo -n cp -f ${src}/privkey.pem ${1}/private/${2}.key
+    sudo -n chmod 0644 ${1}/${2}.crt
+    sudo -n chmod 0600 ${1}/private/${2}.key
+}
+
+copy_cert /usr/jails/jails/www/usr/local/etc/ssl     www.agoracon.at
+copy_cert /usr/jails/jails/gitlab/usr/local/etc/ssl  git.agoracon.at
+copy_cert /usr/jails/jails/redmine/usr/local/etc/ssl red.agoracon.at
+
+echo "--- Successfully deployed certificates"
+
+for v in www redmine gitlab
+do
+  echo "--- Restarting nginx on ${v}..."
+  sudo jexec ${v} service nginx restart
+done
+
+echo "--- Successfully finished."

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+sudo service gssd      start
+sudo service nfsuserd  start
+sudo service rpcbind   start
+sudo service nfsd      start
+sudo service statd     start  # needs: nfsclient nfsd prcbind
+sudo service lockd     start  # needs: nfsclient nfsd rpcbind statd
+sudo service mountd    start  # needs: rpcbind quota
+

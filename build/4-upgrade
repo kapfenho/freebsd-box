@@ -1,0 +1,26 @@
+#!/bin/sh -x
+
+# /sbin/zfs set readonly=off zroot
+# /sbin/zfs mount -a
+# /usr/sbin/kbdmap de
+
+#set -o errexit
+
+cd /usr/src
+
+/usr/sbin/mergemaster -p
+
+/usr/bin/make installworld
+
+/usr/sbin/mergemaster -iUF
+
+/usr/bin/yes | /usr/bin/make delete-old
+/usr/bin/yes | /usr/bin/make delete-old-libs
+
+cd /usr/obj && chflags -R noschg * && rm -rf *
+
+echo
+echo ">>  Successfully upgraded, please reboot now"
+echo
+
+#/sbin/reboot

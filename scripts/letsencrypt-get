@@ -1,0 +1,36 @@
+#!/bin/sh -x
+# 
+#       horst.kapfenberger@agoracon.at, 22.04.2016
+# 
+# during authentication for each domain the call to 
+#   http://domain/.well-known/acme... 
+# is done.
+#
+# - allow access in firewall for us servers
+# - only one env /usr/local/etc/letsencrypt/{test,prod}
+#      prod links to parent dir
+# - second script ..-deploy covers deployment
+# 
+
+ cfg_dir="/usr/local/etc/letsencrypt"
+  keylen="4096"
+srv_test="https://acme-staging.api.letsencrypt.org/directory"
+srv_prod="https://acme-v01.api.letsencrypt.org/directory"
+   email="admin@agoracon.at"
+
+#map='{"agoracon.at,www.agoracon.at":"/usr/jails/jails/www/usr/local/www/agoracon/public",
+#                  "git.agoracon.at":"/usr/jails/jails/git/usr/local/www/gitlab/public",
+#                  "red.agoracon.at":"/usr/jails/jails/redmine/usr/local/www/redmine/public"}'
+
+map='{"agoracon.at,www.agoracon.at":"/usr/jails/jails/www/usr/local/www/agoracon/public","git.agoracon.at":"/usr/jails/jails/gitlab/usr/local/www/gitlab/public","red.agoracon.at":"/usr/jails/jails/redmine/usr/local/www/redmine/public"}'
+
+sudo -n letsencrypt certonly \
+        --email ${email} \
+	--server ${srv_prod} \
+        --config-dir ${cfg_dir} \
+	--agree-tos \
+	--rsa-key-size ${keylen} \
+	--webroot \
+	--webroot-map ${map}
+
+sudo -n chmod -R g=u ${cfg_dir}

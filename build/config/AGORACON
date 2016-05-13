@@ -1,0 +1,16 @@
+# FreeBSD Kernel Cinfig  of Agora Con GmbH 
+# derived from GENERIC
+# ability to remove debugging info
+#
+# horst.kapfenberger@agoracon.at 06.12.15
+#
+include GENERIC
+ident   AGORACON
+# replaced by net.fib="2" in /boot/loader.conf
+# options         ROUTETABLES=2 
+options         VIMAGE
+nooptions       INVARIANTS
+nooptions       INVARIANT_SUPPORT
+nooptions       WITNESS
+nooptions       WITNESS_SKIPSPIN
+nooptions       DEADLKRES

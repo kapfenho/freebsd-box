@@ -1,0 +1,14 @@
+#!/bin/sh -x
+
+set -o errexit
+
+cbsd buildworld clean=1 maxjobs=12
+#cbsd installworld
+
+# cbsd buildworld clean=1 ver=head maxjobs=12
+# cbsd installworld ver=head
+
+echo
+echo ">>  Successfully built world for cbsd"
+echo ">>  Install with:  $ cbsd installworld ver=head"
+echo

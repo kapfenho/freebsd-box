@@ -1,0 +1,17 @@
+#!/bin/sh -x
+
+set -o errexit
+
+cd /usr/src && make installkernel KERNCONF=AGORACON
+
+echo
+echo "*** UPDATING: 20160306"
+echo
+
+make -C sys/boot install
+
+echo 
+echo ">>  Kernel installed successfully"
+echo ">>  Next step: upgrade, in single user mode or with all services down" 
+echo
+

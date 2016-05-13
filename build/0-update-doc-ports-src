@@ -1,0 +1,29 @@
+#!/bin/sh -x
+
+set -o errexit
+
+# _kconf=$(basedir $0)/config/AGORACON
+_kconf=./config/AGORACON
+
+if [ ! -f ${_kconf} ] ; then
+  echo "ERROR: kernel config file ${_kconf} not found!"
+  exit 80
+fi
+
+# documentation
+svn update /usr/doc
+
+# ports
+portsnap fetch update
+
+# source
+workdir=/usr/jails cbsd srcup
+svn update /usr/src
+
+# copy kernel config
+cp -fp ${_kconf} /usr/src/sys/amd64/conf/
+
+echo
+echo ">>  Successfully fetched sources, doc and ports"
+echo ">>  Successfully fetched sources for cbsd"
+echo

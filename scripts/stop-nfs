@@ -1,0 +1,9 @@
+#!/bin/sh
+
+sudo service mountd    stop
+sudo service lockd     stop
+sudo service statd     stop
+sudo service nfsd      stop
+sudo service rpcbind   stop
+sudo service nfsuserd  stop
+sudo service gssd      stop

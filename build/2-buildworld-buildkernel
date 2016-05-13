@@ -1,0 +1,21 @@
+#!/bin/sh -x
+#
+#  https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/makeworld.html
+
+# script /var/tmp/build.out
+
+rm -f /tmp/build{world,kernel}.log
+
+chflags -R noschg /usr/obj/* || true
+rm -Rf /usr/obj/*
+
+set -o errexit
+
+cd /usr/src
+make -j `sysctl -n hw.ncpu` buildworld | tee /tmp/buildworld.log
+make -j `sysctl -n hw.ncpu` buildkernel KERNCONF=AGORACON | tee /tmp/buildkernel.log
+
+echo
+echo ">>  Successfully built world and kernel"
+echo ">>  Ready for kernel installation"
+echo
